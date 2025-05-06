@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      "target": "ES2016", // Target modern browsers
+      "module": "ES2015", // Use modern modules
+      "outDir": "./dist", // Output directory for compiled JS
+      "rootDir": "./src", // Source directory for TS files
+      "strict": true, // Enable all strict type-checking options
+      "esModuleInterop": true, // Allows default imports from commonjs modules
+      "skipLibCheck": true, // Skip type checking of declaration files
+      "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references
+      "sourceMap": true, // Generate source maps for debugging
+      "moduleResolution": "node" // Specify module resolution strategy
+    },
+    "include": [
+      "src/**/*" // Include all files in the src directory
+    ],
+    "exclude": [
+      "node_modules" // Exclude node_modules
+    ]
+  }
+  

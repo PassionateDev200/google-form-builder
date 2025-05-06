@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeScript Form Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>TypeScript Form Builder</h1>
+        <p>A Google Forms-like app using TypeScript & LocalStorage</p>
+    </header>
+
+    <main id="app" class="container">
+        <!-- This container will hold the different views -->
+        <section id="form-list-container" style="display: none;"></section>
+        <section id="form-builder-container" style="display: none;"></section>
+        <section id="form-viewer-container" style="display: none;"></section>
+        <section id="response-viewer-container" style="display: none;"></section>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 Form Builder Exam</p>
+    </footer>
+
+    <!-- Import the compiled JavaScript file (use type="module") -->
+    <script type="module" src="./dist/app.js"></script>
+</body>
+</html>

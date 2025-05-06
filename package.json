@@ -1,0 +1,25 @@
+{
+  "name": "google-forms-clone",
+  "version": "1.0.0",
+  "description": "A simple Google Forms clone using TypeScript and localStorage",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "keywords": [
+    "typescript",
+    "localstorage",
+    "forms"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "typescript": "^5.0.0"
+  }
+}
