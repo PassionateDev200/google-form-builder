@@ -1,20 +1,14 @@
-// src/ui.ts
 import { Form, AnyFormField, FormResponse, FormFieldOption, FieldType } from './interfaces';
 import { generateId } from './storage';
 
-// --- DOM Element Selectors ---
-// It's good practice to centralize selectors if they are used multiple times.
 const DOMElements = {
     formListContainer: () => document.getElementById('form-list-container')!,
     formBuilderContainer: () => document.getElementById('form-builder-container')!,
     formViewerContainer: () => document.getElementById('form-viewer-container')!,
     responseViewerContainer: () => document.getElementById('response-viewer-container')!,
     appContainer: () => document.getElementById('app')!,
-    // Add more selectors as needed
 };
 
-// --- State Management (Simple) ---
-// Store references to functions provided by app.ts for handling events
 interface UIActions {
     navigateToFormBuilder: (formId?: string) => void;
     navigateToFormViewer: (formId: string) => void;
@@ -24,13 +18,11 @@ interface UIActions {
     submitResponse: (formId: string, responseData: { [fieldId: string]: string | string[] }) => void;
     goHome: () => void;
 }
-let actions: UIActions; // To be initialized by app.ts
+let actions: UIActions;
 
 export function initializeUI(uiActions: UIActions): void {
     actions = uiActions;
 }
-
-// --- View Switching ---
 
 /** Hides all main content sections */
 function hideAllSections(): void {
@@ -46,8 +38,6 @@ function showSection(section: HTMLElement): void {
     section.style.display = 'block';
     section.innerHTML = ''; // Clear previous content
 }
-
-// --- Rendering Functions ---
 
 /**
  * Renders the list of existing forms.
@@ -130,7 +120,6 @@ export function renderFormBuilder(form: Form): void {
     const container = DOMElements.formBuilderContainer();
     showSection(container);
 
-    // --- Header & Title ---
     const header = document.createElement('div');
     header.className = 'form-builder-header';
 
@@ -158,12 +147,10 @@ export function renderFormBuilder(form: Form): void {
 
     container.appendChild(header);
 
-    // --- Fields Area ---
     const fieldsContainer = document.createElement('div');
     fieldsContainer.id = 'fields-builder-area'; // ID for easy targeting
     container.appendChild(fieldsContainer);
 
-    // Function to re-render only the fields area
     const rerenderFields = () => {
         fieldsContainer.innerHTML = ''; // Clear current fields
         form.fields.forEach((field, index) => {
@@ -172,9 +159,8 @@ export function renderFormBuilder(form: Form): void {
         });
     };
 
-    rerenderFields(); // Initial render of existing fields
+    rerenderFields();
 
-    // --- Add Field Controls ---
     const addFieldControls = document.createElement('div');
     addFieldControls.className = 'add-field-controls';
 
@@ -221,8 +207,8 @@ export function renderFormBuilder(form: Form): void {
                 };
                 break;
         }
-        form.fields.push(newField); // Add to the form's fields array (in memory)
-        rerenderFields(); // Re-render the fields list to include the new one
+        form.fields.push(newField);
+        rerenderFields();
     };
     addFieldControls.appendChild(addFieldButton);
     container.appendChild(addFieldControls);
@@ -251,7 +237,7 @@ function createFieldEditorElement(field: AnyFormField, form: Form, index: number
     labelInput.value = field.label;
     labelInput.className = 'field-label-input';
     labelInput.oninput = () => {
-        field.label = labelInput.value; // Update label in memory
+        field.label = labelInput.value;
     };
     fieldHeader.appendChild(labelInput);
 
@@ -281,7 +267,6 @@ function createFieldEditorElement(field: AnyFormField, form: Form, index: number
     fieldHeader.appendChild(deleteFieldButton);
     fieldDiv.appendChild(fieldHeader);
 
-    // --- Field Specific Options (Radio/Checkbox) ---
     if (field.type === 'radio' || field.type === 'checkbox') {
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'field-options-editor';
@@ -296,7 +281,6 @@ function createFieldEditorElement(field: AnyFormField, form: Form, index: number
             optionInput.placeholder = `Option ${optionIndex + 1}`;
             optionInput.oninput = () => {
                 option.label = optionInput.value;
-                // Simple approach: value mirrors label. Could add separate value input if needed.
                 option.value = optionInput.value.toLowerCase().replace(/\s+/g, '-');
             };
             optionDiv.appendChild(optionInput);
@@ -335,9 +319,6 @@ function createFieldEditorElement(field: AnyFormField, form: Form, index: number
 
         fieldDiv.appendChild(optionsContainer);
     }
-    // Add more logic here for other field types if needed (e.g., dropdown)
-
-    // Optional: Add drag handles for reordering here if implementing that feature
 
     return fieldDiv;
 }
@@ -368,7 +349,6 @@ export function renderFormViewer(form: Form): void {
 
     container.appendChild(header);
 
-    // --- Form Element ---
     // Use a <form> element for semantic correctness and potential native validation
     const formElement = document.createElement('form');
     formElement.id = `form-${form.id}`;
@@ -442,16 +422,14 @@ function createFieldViewerElement(field: AnyFormField): HTMLElement {
 
                 const radioInput = document.createElement('input');
                 radioInput.type = 'radio';
-                // Important: All radio buttons for the same question must share the same name
                 radioInput.name = field.id;
-                // Assign a unique ID for the label association
                 radioInput.id = `field-${field.id}-option-${option.id}`;
                 radioInput.value = option.value;
-                radioInput.required = field.required ?? false; // Required applies to the group
+                radioInput.required = field.required ?? false;
 
                 const optionLabel = document.createElement('label');
                 optionLabel.textContent = option.label;
-                optionLabel.htmlFor = radioInput.id; // Link label to the specific radio button
+                optionLabel.htmlFor = radioInput.id;
 
                 optionDiv.appendChild(radioInput);
                 optionDiv.appendChild(optionLabel);
@@ -460,23 +438,17 @@ function createFieldViewerElement(field: AnyFormField): HTMLElement {
             break;
 
         case 'checkbox':
-            // Checkboxes can have multiple selections, use field ID in name for grouping on submit
             field.options.forEach((option, index) => {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'form-option';
 
                 const checkboxInput = document.createElement('input');
                 checkboxInput.type = 'checkbox';
-                // Use field ID and option value/id to distinguish checkboxes
-                checkboxInput.name = field.id; // Group checkboxes for this question
+                checkboxInput.name = field.id;
                 checkboxInput.id = `field-${field.id}-option-${option.id}`;
                 checkboxInput.value = option.value;
-                // Note: 'required' on checkbox group usually means "at least one must be checked".
-                // Basic HTML 'required' doesn't enforce this well. JS validation needed for that.
-                // We'll add basic required for now, but it might not behave as expected for checkboxes.
-                // A better approach would be custom JS validation on submit.
+
                 if (field.required) {
-                    // Add attribute for potential JS validation, not native enforcement
                     checkboxInput.dataset.requiredGroup = 'true';
                 }
 
@@ -489,13 +461,13 @@ function createFieldViewerElement(field: AnyFormField): HTMLElement {
                 optionDiv.appendChild(optionLabel);
                 inputContainer.appendChild(optionDiv);
             });
-            // Add hidden input for validation check if required
+
             if (field.required) {
                 const hiddenValidation = document.createElement('input');
-                hiddenValidation.type = 'text'; // Can be text/hidden, used for Validity API check
+                hiddenValidation.type = 'text';
                 hiddenValidation.required = true;
-                hiddenValidation.style.display = 'none'; // Hide it visually
-                hiddenValidation.dataset.checkboxGroup = field.id; // Link to the group
+                hiddenValidation.style.display = 'none';
+                hiddenValidation.dataset.checkboxGroup = field.id;
                 inputContainer.appendChild(hiddenValidation);
             }
             break;

@@ -1,23 +1,5 @@
-// src/storage.test.ts
 import { Form, FormResponse, TextField, RadioField } from './interfaces';
 import * as Storage from './storage'; // Import all exports
-
-// Mock localStorage (if not using jest.setup.js)
-/*
-if (typeof window !== 'undefined' && !global.localStorage) {
-  const localStorageMock = (() => {
-    let store = {};
-    return {
-      getItem: (key) => store[key] || null,
-      setItem: (key, value) => { store[key] = value.toString(); },
-      removeItem: (key) => { delete store[key]; },
-      clear: () => { store = {}; }
-    };
-  })();
-  Object.defineProperty(global, 'localStorage', { value: localStorageMock });
-}
-*/
-// Note: Using jest.setup.js is cleaner than putting the mock here.
 
 const FORMS_STORAGE_KEY = 'googleFormsClone_Forms';
 const RESPONSES_STORAGE_KEY = 'googleFormsClone_Responses';

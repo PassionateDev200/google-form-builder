@@ -1,5 +1,3 @@
-// src/interfaces.ts
-
 /**
  * Defines the possible types for form fields.
  */

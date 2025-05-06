@@ -182,7 +182,6 @@ function handleDeleteForm(formId: string): void {
              if (currentView === 'list') {
                 UI.renderFormList(forms);
             }
-             // Add checks for other views if necessary, though deleting usually happens from the list
         }
     } else {
         console.error(`Delete failed: Form with ID ${formId} not found.`);
@@ -214,7 +213,6 @@ function handleSubmitResponse(formId: string, responseData: { [fieldId: string]:
     responses.push(newResponse); // Add to in-memory list
     Storage.saveResponses(responses); // Persist to localStorage
     console.log(`Response submitted for form ${formId}:`, newResponse);
-    // UI transition (e.g., showing a success message or redirecting) is handled in UI.handleSubmit
 }
 
 
