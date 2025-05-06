@@ -36,10 +36,9 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-directory>
+    git clone https://github.com/PassionateDev200/google-form-builder.git
+    cd google-form-builder
     ```
-    *(Replace `<your-repository-url>` and `<your-repository-directory>` with the actual URL and folder name)*
 
 2.  **Install dependencies:**
     ```bash
